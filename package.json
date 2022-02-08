@@ -1,0 +1,50 @@
+{
+  "name": "zotero-obsidian-note",
+  "version": "0.0.1",
+  "description": "Taking notes with Obsidian.md from Zotero library",
+  "scripts": {
+    "lint": "eslint . --ext .ts --cache --cache-location .eslintcache/",
+    "prebuild": "npm run lint",
+    "build": "tsc --noEmit && node esbuild.js",
+    "postbuild": "zotero-plugin-zipup build zotero-obsidian-note",
+    "release": "zotero-plugin-release",
+    "postversion": "git push --follow-tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aidenlx/zotero-obsidian-note.git"
+  },
+  "author": {
+    "name": "aidenlx",
+    "email": "aiden.lx@outlook.com"
+  },
+  "bugs": {
+    "url": "https://github.com/aidenlx/zotero-obsidian-note/issues"
+  },
+  "homepage": "https://github.com/aidenlx/zotero-obsidian-note",
+  "dependencies": {
+    "@types/mocha": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
+    "esbuild": "^0.14.10",
+    "eslint": "^8.6.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsdoc": "^37.5.1",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "mkdirp": "^1.0.4",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4",
+    "zotero-plugin": "^1.0.62"
+  },
+  "xpi": {
+    "name": "Obsidian Note for Zotero",
+    "updateLink": "https://github.com/aidenlx/zotero-obsidian-note/releases/download/v{version}/zotero-obsidian-note-{version}.xpi",
+    "releaseURL": "https://github.com/aidenlx/zotero-obsidian-note/releases/download/release/"
+  },
+  "devDependencies": {
+    "@aidenlx/eslint-config": "^0.1.0",
+    "@aidenlx/prettier-config": "^0.1.0",
+    "@aidenlx/ts-config": "^0.1.1"
+  }
+}
