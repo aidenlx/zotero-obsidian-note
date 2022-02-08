@@ -45,6 +45,12 @@
   "devDependencies": {
     "@aidenlx/eslint-config": "^0.1.0",
     "@aidenlx/prettier-config": "^0.1.0",
-    "@aidenlx/ts-config": "^0.1.1"
+    "@aidenlx/ts-config": "^0.1.1",
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
