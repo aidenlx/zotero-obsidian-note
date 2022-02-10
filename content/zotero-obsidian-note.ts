@@ -67,7 +67,7 @@ class ObsidianNote {
             (anno) => !anno.hasTag("OB_NOTE")
           );
           if (this.sendToObsidian("annotation", "export", items))
-            setTags(items, ["OB_NOTE"]);
+            setObNoteFlag(items);
         },
       }
     );
@@ -91,7 +91,7 @@ class ObsidianNote {
 
   handleSelectedItems() {
     const isVaild = (item) =>
-      item.isRegularItem() ||
+      item.isRegularItem() || // !note && !annotation && !attachment
       (item.isAttachment() && !!item?.parentItem?.isRegularItem());
     const getInfoItem = (item) =>
       item.isAttachment() ? item.parentItem : item;
@@ -115,10 +115,14 @@ class ObsidianNote {
       }, []);
       if (items.length === 0) return;
       items = uniqBy(items, "id");
-      if (this.sendToObsidian("info", "export", items))
-        setTags(items, ["OB_NOTE"]);
+      if (this.sendToObsidian("info", "export", items)) setObNoteFlag(items);
     }
   }
+
+  /**
+   * @param items should all be Regular Items / Annotation Items
+   * @returns if url is sent to obsidian successfully
+   */
   sendToObsidian(
     type: "info" | "annotation",
     action: "open" | "export",
@@ -202,5 +206,5 @@ Zotero.ObsidianNote = new ObsidianNote();
 
 // if (!Zotero.ObsidianNote) Zotero.ObsidianNote = new ObsidianNote();
 
-const setTags = (items: any[], tags: string[]) =>
-  items.forEach((item) => item.setTags(tags));
+const setObNoteFlag = (items: any[]) =>
+  items.forEach((item) => item.addTag("OB_NOTE"));
