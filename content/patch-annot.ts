@@ -71,13 +71,13 @@ const PatchReaderInstance = (...items: MenuItemProps[]) => {
               function (data: ReaderData) {
                 const result = next.call(this, data);
                 const attachment = Zotero.Items.get(this._itemID);
-                let annos;
+                let annots;
                 addMenuItem(this, data, () => {
-                  if (!annos)
-                    annos = data.ids.map((key) =>
+                  if (!annots)
+                    annots = data.ids.map((key) =>
                       Zotero.Items.getByLibraryAndKey(attachment.libraryID, key)
                     );
-                  return annos;
+                  return annots;
                 });
                 return result;
               },
@@ -92,7 +92,7 @@ const PatchReaderInstance = (...items: MenuItemProps[]) => {
   notifierID = Zotero.Notifier.registerObserver(
     notifier,
     ["tab"],
-    "anno-popup-patch"
+    "annot-popup-patch"
   );
 
   return () => {

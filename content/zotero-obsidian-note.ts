@@ -3,7 +3,7 @@ import { encodeURI } from "js-base64";
 import { uniqBy } from "lodash-es";
 
 import { debug } from "./debug";
-import PatchReaderInstance from "./patch-anno";
+import PatchReaderInstance from "./patch-annot";
 
 class ObsidianNote {
   // tslint:disable-line:variable-name
@@ -11,7 +11,7 @@ class ObsidianNote {
   private globals: Record<string, any>;
   private strings: { getString: (key: string) => string };
   private _notifierID: any;
-  private _unloadAnnoPatch: () => void;
+  private _unloadAnnotPatch: () => void;
 
   public getString(key: string) {
     try {
@@ -39,7 +39,7 @@ class ObsidianNote {
       "obsidian"
     );
 
-    this._unloadAnnoPatch = PatchReaderInstance(
+    this._unloadAnnotPatch = PatchReaderInstance(
       {
         label: this.getString("pdfReader.openInObsidian"),
         condition: (data, getAnnotations) => {
@@ -58,13 +58,13 @@ class ObsidianNote {
         // not implemented yet
         label: this.getString("pdfReader.exportToObsidian"),
         condition: (_data, getAnnotations) =>
-          getAnnotations().some((anno) => !anno.hasTag("OB_NOTE")),
+          getAnnotations().some((annot) => !annot.hasTag("OB_NOTE")),
         /**
          * export annotation to obsidian
          */
         action: (_data, getAnnotations) => {
           const items = getAnnotations().filter(
-            (anno) => !anno.hasTag("OB_NOTE")
+            (annot) => !annot.hasTag("OB_NOTE")
           );
           if (this.sendToObsidian("annotation", "export", items))
             setObNoteFlag(items);
@@ -74,7 +74,7 @@ class ObsidianNote {
   }
   unload() {
     Zotero.Notifier.unregisterObserver(this._notifierID);
-    this._unloadAnnoPatch();
+    this._unloadAnnotPatch();
   }
 
   /** Event handler for Zotero.Notifier */
@@ -158,9 +158,9 @@ class ObsidianNote {
       url.searchParams.append("info-key", infoItem.key);
       url.searchParams.append("library-id", infoItem.libraryID);
       if (type === "annotation")
-        url.searchParams.append("anno-key", items[0].key);
+        url.searchParams.append("annot-key", items[0].key);
     } else if (action === "export") {
-      let data: SendData_AnnoExport | SendData_InfoExport;
+      let data: SendData_AnnotExport | SendData_InfoExport;
       if (type === "annotation") {
         data = {
           info: infoItem,
@@ -188,7 +188,7 @@ class ObsidianNote {
   }
 }
 
-type SendData_AnnoExport = {
+type SendData_AnnotExport = {
   info: any;
   annotations: {
     [key: string]: any;
