@@ -3,7 +3,7 @@ Obsidian Note
 
 Install by downloading the [latest version](https://github.com/aidenlx/zotero-obsidian-note/releases/latest)
 
-Taking notes with Obsidian.md from Zotero library
+Zotero plugin to integrate with Obsidian.md, create and jump to literature notes in Obsidian.md
 
 # Support - read carefully
 
