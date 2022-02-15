@@ -163,7 +163,7 @@ class ObsidianNote {
       let data: SendData_AnnotExport | SendData_InfoExport;
       if (type === "annotation") {
         data = {
-          info: infoItem,
+          info: injectFields(infoItem),
           annotations: items.map((og) => {
             let copy = JSON.parse(JSON.stringify(og));
             if (["image", "ink"].includes(og.annotationType))
@@ -172,7 +172,7 @@ class ObsidianNote {
           }),
         };
       } else if (type === "info") {
-        data = { info: items };
+        data = { info: items.map(injectFields) };
       } else {
         assertNever(type);
       }
@@ -208,3 +208,16 @@ Zotero.ObsidianNote = new ObsidianNote();
 
 const setObNoteFlag = (items: any[]) =>
   items.forEach((item) => item.addTag("OB_NOTE"));
+
+const injectFields = (og: any) => {
+  let copy = JSON.parse(JSON.stringify(og));
+  copy.libraryID = og.libraryID;
+  copy.groupID = og.library.groupID;
+  if (Zotero.BetterBibTeX) {
+    const keyInfo = Zotero.BetterBibTeX.KeyManager.get(og.id);
+    if (keyInfo) {
+      copy.citekey = keyInfo.citekey;
+    }
+  }
+  return copy;
+};
